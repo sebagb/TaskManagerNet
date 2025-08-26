@@ -12,7 +12,7 @@ var connection = config["Database:ConnectionString"];
 ApplicationServiceCollectionExtension.AddApplication(connection!);
 ApplicationServiceCollectionExtension.Initializer!.Initialize();
 
-ApplicationServiceCollectionExtension.Service.CreateProject(new Project()
+ApplicationServiceCollectionExtension.Service!.CreateProject(new Project()
 {
     Id = 4444,
     Deadline = 2026,
