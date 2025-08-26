@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Console", "Task
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Contract", "TaskManager.Contract\TaskManager.Contract.csproj", "{A593F905-1A16-473F-8B89-AE7505B43710}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Api", "TaskManager.Api\TaskManager.Api.csproj", "{F0462D00-6C3B-455C-8818-CB085B6D0047}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{A593F905-1A16-473F-8B89-AE7505B43710}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A593F905-1A16-473F-8B89-AE7505B43710}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A593F905-1A16-473F-8B89-AE7505B43710}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0462D00-6C3B-455C-8818-CB085B6D0047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0462D00-6C3B-455C-8818-CB085B6D0047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0462D00-6C3B-455C-8818-CB085B6D0047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0462D00-6C3B-455C-8818-CB085B6D0047}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
