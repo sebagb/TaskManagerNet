@@ -12,4 +12,9 @@ public class ProjectService
     {
         return repository.CreateProject(project);
     }
+
+    public Project? GetById(int id)
+    {
+        return repository.GetById(id);
+    }
 }
