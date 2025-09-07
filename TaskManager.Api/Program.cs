@@ -1,4 +1,5 @@
 using TaskManager.Application;
+using TaskManager.Application.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,5 +23,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+var dbInitializer = app.Services.GetRequiredService<DbInitializer>();
+dbInitializer.Initialize();
 
 app.Run();
