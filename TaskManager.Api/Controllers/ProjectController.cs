@@ -9,14 +9,14 @@ public class ProjectController
     (IProjectService service)
     : ControllerBase
 {
-    [HttpPost(ApiEndpoints.Project.CreateProject)]
-    public IActionResult CreateProject(
+    [HttpPost(ApiEndpoints.Project.Create)]
+    public IActionResult Create(
         [FromBody] CreateProjectRequest request)
     {
         var project = request.MapToProject();
         service.CreateProject(project);
         var response = project.MapToResponse();
-        return CreatedAtAction(nameof(CreateProject), new { id = project.Id }, response);
+        return CreatedAtAction(nameof(Create), new { id = project.Id }, response);
     }
 
     [HttpGet(ApiEndpoints.Project.Get)]
