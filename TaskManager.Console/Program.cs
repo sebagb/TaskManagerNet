@@ -1,22 +1,27 @@
 ﻿
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using TaskManager.Application;
 using TaskManager.Application.Models;
+using TaskManager.Console;
 
-var config = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json")
-    .Build();
+var builder = Host.CreateApplicationBuilder(args);
 
-var connection = config["Database:ConnectionString"];
-ApplicationServiceCollectionExtension.AddApplication(connection!);
-ApplicationServiceCollectionExtension.Initializer!.Initialize();
+var conf = builder.Configuration["Database:ConnectionString"];
+builder.Services.AddApplication();
+builder.Services.AddDatabase(conf);
 
-ApplicationServiceCollectionExtension.Service!.CreateProject(new Project()
+builder.Services.AddTransient<Client>();
+
+using IHost host = builder.Build();
+
+var client = host.Services.GetRequiredService<Client>();
+var response = client.Service.CreateProject(new Project
 {
-    Id = 4444,
     Deadline = 2026,
     Status = "Pending",
     Tasks = "Start, Continue, Finish",
     Title = "My fist project"
 });
+var created = response ? "Yes" : "No";
+Console.WriteLine($"Was it created? {created}");

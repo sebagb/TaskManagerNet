@@ -1,21 +1,24 @@
 using TaskManager.Application.Database;
 using TaskManager.Application.Repositories;
 using TaskManager.Application.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TaskManager.Application;
 
 public static class ApplicationServiceCollectionExtension
 {
-    public static IProjectService? Service { get; private set; }
-    public static IProjectRepository? Repository { get; private set; }
-    public static DbInitializer? Initializer { get; private set; }
-
-    public static void AddApplication(string connectionString)
+    public static IServiceCollection AddApplication(this IServiceCollection service)
     {
-        var mySqlConnectionFactory = new MySqlConnectionFactory(connectionString);
-        Repository = new ProjectRepository(mySqlConnectionFactory);
-        Initializer = new DbInitializer(mySqlConnectionFactory);
-        Service = new ProjectService(Repository);
+        service.AddSingleton<IProjectRepository, ProjectRepository>();
+        service.AddSingleton<IProjectService, ProjectService>();
+        return service;
     }
 
+    public static IServiceCollection AddDatabase(this IServiceCollection service, string connectionString)
+    {
+        service.AddSingleton<IDbConnectionFactory>(_ =>
+            new MySqlConnectionFactory(connectionString));
+        service.AddSingleton<DbInitializer>();
+        return service;
+    }
 }
