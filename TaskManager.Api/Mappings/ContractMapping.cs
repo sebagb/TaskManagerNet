@@ -10,6 +10,7 @@ public static class ContractMapping
     {
         return new Project()
         {
+            Id = Guid.NewGuid(),
             Deadline = request.Deadline,
             Title = request.Title
         };

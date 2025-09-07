@@ -16,12 +16,12 @@ public class ProjectController
         var project = request.MapToProject();
         service.CreateProject(project);
         var response = project.MapToResponse();
-        return CreatedAtAction(nameof(Create), new { id = project.Id }, response);
+        return CreatedAtAction(nameof(Get), new { id = project.Id }, response);
     }
 
     [HttpGet(ApiEndpoints.Project.Get)]
     public IActionResult Get(
-        [FromRoute] int id)
+        [FromRoute] Guid id)
     {
         var project = service.GetById(id);
 

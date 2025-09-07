@@ -15,7 +15,7 @@ public class DbInitializer
         var cmd = connection.CreateCommand();
         cmd.CommandType = CommandType.Text;
         cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Project (
-            Id INTEGER PRIMARY KEY,
+            Id VARCHAR(255) PRIMARY KEY,
             Deadline INTEGER NOT NULL,
             Status VARCHAR(100),
             Tasks VARCHAR(100),

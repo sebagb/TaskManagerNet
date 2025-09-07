@@ -13,7 +13,7 @@ public class ProjectService
         return repository.CreateProject(project);
     }
 
-    public Project? GetById(int id)
+    public Project? GetById(Guid id)
     {
         return repository.GetById(id);
     }

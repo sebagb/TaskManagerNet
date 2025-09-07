@@ -6,6 +6,6 @@ public static class ApiEndpoints
     {
         private const string Base = "projects";
         public const string Create = $"{Base}";
-        public const string Get = $"{Base}/{{id:int}}";
+        public const string Get = $"{Base}/{{id}}";
     }
 }
