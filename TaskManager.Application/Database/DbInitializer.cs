@@ -14,13 +14,21 @@ public class DbInitializer
 
         var cmd = connection.CreateCommand();
         cmd.CommandType = CommandType.Text;
-        cmd.CommandText = @"CREATE TABLE IF NOT EXISTS Project (
+        cmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS Project (
             Id VARCHAR(255) PRIMARY KEY,
             Deadline INTEGER NOT NULL,
             Status VARCHAR(100),
-            Tasks VARCHAR(100),
             Title VARCHAR(100) NOT NULL
-            )";
+            );
+
+            CREATE TABLE IF NOT EXISTS ProjectTask (
+            Id VARCHAR(255) PRIMARY KEY,
+            ProjectId VARCHAR(255),
+            Title VARCHAR(100) NOT NULL,
+            Priority INTEGER NOT NULL,
+            FOREIGN KEY (ProjectId) REFERENCES Project(Id)
+            );";
 
         cmd.ExecuteNonQuery();
     }

@@ -13,12 +13,39 @@ public class ProjectRepository
         using var connection = dbConnectionFactory.CreateConnection();
 
         var cmd = connection.CreateCommand();
-        cmd.CommandType = System.Data.CommandType.Text;
+        cmd.CommandType = CommandType.Text;
         cmd.CommandText = @$"INSERT INTO Project
-            (Id, Deadline, Status, Tasks, Title)
-            VALUES ('{project.Id}',{project.Deadline},'{project.Status}','{project.Tasks}','{project.Title}')";
+            (Id, Deadline, Status, Title)
+            VALUES (
+                '{project.Id}',
+                {project.Deadline},
+                '{project.Status}',
+                '{project.Title}')";
 
-        return cmd.ExecuteNonQuery() > 0;
+        if (cmd.ExecuteNonQuery() < 1)
+        {
+            return false;
+        }
+
+        foreach (var task in project.Tasks)
+        {
+            cmd = connection.CreateCommand();
+            cmd.CommandType = CommandType.Text;
+            cmd.CommandText = @$"INSERT INTO ProjectTask
+                (Id, ProjectId, Title, Priority)
+                VALUES (
+                    '{task.Id}',
+                    '{task.ProjectId}',
+                    '{task.Title}',
+                    {task.Priority})";
+
+            if (cmd.ExecuteNonQuery() < 1)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public Project? GetById(Guid id)
@@ -36,13 +63,32 @@ public class ProjectRepository
             return null;
         }
 
-        return new Project()
+        var project = new Project()
         {
             Id = reader.GetGuid(0),
             Deadline = reader.GetInt32(1),
             Status = Enum.Parse<Project.State>(reader.GetString(2)),
-            Tasks = reader.GetString(3),
-            Title = reader.GetString(4)
+            Title = reader.GetString(3)
         };
+        reader.Close();
+
+        cmd = connection.CreateCommand();
+        cmd.CommandType = CommandType.Text;
+        cmd.CommandText = @$"SELECT * FROM ProjectTask WHERE ProjectId = '{id}'";
+
+        using var taskReader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            project.Tasks.Add(new ProjectTask()
+            {
+                Id = reader.GetGuid(0),
+                ProjectId = reader.GetGuid(1),
+                Title = reader.GetString(2),
+                Priority = reader.GetInt32(3)
+            });
+        }
+
+        return project;
     }
 }

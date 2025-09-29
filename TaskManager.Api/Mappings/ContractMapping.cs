@@ -8,12 +8,17 @@ public static class ContractMapping
 {
     public static Project MapToProject(this CreateProjectRequest request)
     {
+        var projectId = Guid.NewGuid();
         return new Project()
         {
-            Id = Guid.NewGuid(),
+            Id = projectId,
             Deadline = request.Deadline,
             Status = Project.State.Pending,
-            Title = request.Title
+            Title = request.Title,
+            Tasks = [new ProjectTask() {
+                Id = Guid.NewGuid(),
+                ProjectId = projectId,
+                Title = "TODO" }]
         };
     }
 
