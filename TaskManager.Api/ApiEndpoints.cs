@@ -8,4 +8,10 @@ public static class ApiEndpoints
         public const string Create = $"{Base}";
         public const string Get = $"{Base}/{{id}}";
     }
+
+    public static class Auth
+    {
+        private const string Base = "auth";
+        public const string TrustedMemberToken = "trustedToken";
+    }
 }

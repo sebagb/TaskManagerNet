@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TaskManager.Api.Auth;
 using TaskManager.Api.Mappings;
 using TaskManager.Application.Services;
 using TaskManager.Contract.Requests;
@@ -10,6 +12,7 @@ public class ProjectController
     : ControllerBase
 {
     [HttpPost(ApiEndpoints.Project.Create)]
+    [Authorize(AuthConstants.TrustedMemberPolicyName)]
     public IActionResult Create(
         [FromBody] CreateProjectRequest request)
     {
