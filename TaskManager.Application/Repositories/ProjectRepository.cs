@@ -40,7 +40,7 @@ public class ProjectRepository
         {
             Id = reader.GetGuid(0),
             Deadline = reader.GetInt32(1),
-            Status = reader.GetString(2),
+            Status = Enum.Parse<Project.State>(reader.GetString(2)),
             Tasks = reader.GetString(3),
             Title = reader.GetString(4)
         };

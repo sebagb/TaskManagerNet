@@ -12,6 +12,7 @@ public static class ContractMapping
         {
             Id = Guid.NewGuid(),
             Deadline = request.Deadline,
+            Status = Project.State.Pending,
             Title = request.Title
         };
     }
@@ -22,7 +23,7 @@ public static class ContractMapping
         {
             Id = project.Id,
             Deadline = project.Deadline,
-            Status = project.Status,
+            Status = project.Status.ToString(),
             Tasks = project.Tasks,
             Title = project.Title
         };
