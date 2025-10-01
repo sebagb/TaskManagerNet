@@ -12,6 +12,6 @@ public static class ApiEndpoints
     public static class Auth
     {
         private const string Base = "auth";
-        public const string TrustedMemberToken = "trustedToken";
+        public const string TrustedMemberToken = $"{Base}/trustedToken";
     }
 }
