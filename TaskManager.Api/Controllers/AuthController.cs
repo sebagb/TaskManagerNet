@@ -1,13 +1,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using TaskManager.Api.Mappings;
+using TaskManager.Application.Models;
 using TaskManager.Application.Services;
-using TaskManager.Contract.Request;
 using TaskManager.Contract.Requests;
+using TaskManager.Contract.Responses;
 
 namespace TaskManager.Api.Controllers;
 
@@ -43,41 +43,21 @@ public class AuthController
             return NotFound();
         }
 
-        var response = member.MapToResponse();
+        var jwt = CreateTrustedMemberToken(member);
 
-        return Ok(response);
+        return Ok(new JwtResponse() { Access_token = jwt });
     }
 
-    [HttpPost(ApiEndpoints.Auth.TrustedMemberToken)]
-    public IActionResult CreateTrustedMemberToken(
-        [FromBody] TokenGenerationRequest request)
+    private string CreateTrustedMemberToken(Member member)
     {
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Sub, request.Email),
-            new(JwtRegisteredClaimNames.Email, request.Email),
-            new ("userid", request.UserId.ToString())
+            new(JwtRegisteredClaimNames.Sub, member.Username),
+            new(JwtRegisteredClaimNames.Email, member.Username),
+            new("memberId", member.MemberId.ToString()),
+            new("admin", member.IsAdmin ? "true" : "false")
         };
-
-        foreach (var claimPair in request.CustomClaims)
-        {
-            var jsonElement = (JsonElement)claimPair.Value;
-            var valueType = jsonElement.ValueKind switch
-            {
-                JsonValueKind.True => ClaimValueTypes.Boolean,
-                JsonValueKind.False => ClaimValueTypes.Boolean,
-                JsonValueKind.Number => ClaimValueTypes.Double,
-                _ => ClaimValueTypes.String
-            };
-
-            var claim = new Claim(claimPair.Key,
-                claimPair.Value.ToString()!,
-                valueType);
-
-            claims.Add(claim);
-
-        }
 
         var key = Encoding.UTF8.GetBytes(TokenSecret);
 
@@ -96,6 +76,7 @@ public class AuthController
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
         var jwt = tokenHandler.WriteToken(token);
-        return Ok(jwt);
+
+        return jwt;
     }
 }

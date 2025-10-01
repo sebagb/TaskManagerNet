@@ -38,10 +38,8 @@ builder.Services.AddAuthentication()
         });
 
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy(AuthConstants.TrustedMemberPolicyName,
-        p => p.RequireAssertion(c =>
-            c.User.HasClaim(m => m is { Type: AuthConstants.AdminUserClaimName, Value: "true" }) ||
-            c.User.HasClaim(m => m is { Type: AuthConstants.TrustedMemberClaimName, Value: "true" })));
+    .AddPolicy(AuthConstants.AdminUserClaimName,
+        p => p.RequireClaim(AuthConstants.AdminUserClaimName, "true"));
 
 var app = builder.Build();
 

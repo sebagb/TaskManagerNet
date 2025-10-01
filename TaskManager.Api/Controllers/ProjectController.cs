@@ -12,7 +12,7 @@ public class ProjectController
     : ControllerBase
 {
     [HttpPost(ApiEndpoints.Project.Create)]
-    [Authorize(AuthConstants.TrustedMemberPolicyName)] // Change to be admin only
+    [Authorize]
     public IActionResult Create(
         [FromBody] CreateProjectRequest request)
     {
