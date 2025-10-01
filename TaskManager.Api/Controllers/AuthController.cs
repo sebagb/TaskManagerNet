@@ -4,14 +4,49 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using TaskManager.Api.Mappings;
+using TaskManager.Application.Services;
 using TaskManager.Contract.Request;
+using TaskManager.Contract.Requests;
 
 namespace TaskManager.Api.Controllers;
 
-public class AuthController : ControllerBase
+public class AuthController
+    (IMemberService service) : ControllerBase
 {
+    private readonly IMemberService service = service;
+
     private const string TokenSecret = "PleasePleaseStoreAndLoadSecurelyTheTokenSecret";
     private static readonly TimeSpan TokenLifetime = TimeSpan.FromHours(8);
+
+    [HttpPost(ApiEndpoints.Auth.CreateTrustedMember)]
+    public IActionResult CreateTrustedMember(
+        [FromBody] CreateMemberRequest request)
+    {
+        var member = request.MapToMember();
+        service.CreateMember(member);
+        var response = member.MapToResponse();
+
+        return CreatedAtAction(
+            nameof(GetTrustedMember),
+            response);
+    }
+
+    [HttpPost(ApiEndpoints.Auth.GetTrustedMember)]
+    public IActionResult GetTrustedMember(
+        [FromBody] GetTrustedMemberRequest request)
+    {
+        var member = service.GetByCredentials(request.Username, request.Password);
+
+        if (member == null)
+        {
+            return NotFound();
+        }
+
+        var response = member.MapToResponse();
+
+        return Ok(response);
+    }
 
     [HttpPost(ApiEndpoints.Auth.TrustedMemberToken)]
     public IActionResult CreateTrustedMemberToken(

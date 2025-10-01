@@ -12,7 +12,7 @@ public class ProjectController
     : ControllerBase
 {
     [HttpPost(ApiEndpoints.Project.Create)]
-    [Authorize(AuthConstants.TrustedMemberPolicyName)]
+    [Authorize(AuthConstants.TrustedMemberPolicyName)] // Change to be admin only
     public IActionResult Create(
         [FromBody] CreateProjectRequest request)
     {
@@ -36,4 +36,8 @@ public class ProjectController
         var response = project.MapToResponse();
         return Ok(response);
     }
+
+    //Trusted: add task
+
+    //Admin only: delete
 }

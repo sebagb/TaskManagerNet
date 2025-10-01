@@ -11,6 +11,8 @@ public static class ApplicationServiceCollectionExtension
     {
         service.AddSingleton<IProjectRepository, ProjectRepository>();
         service.AddSingleton<IProjectService, ProjectService>();
+        service.AddSingleton<IMemberRepository, MemberRepository>();
+        service.AddSingleton<IMemberService, MemberService>();
         return service;
     }
 

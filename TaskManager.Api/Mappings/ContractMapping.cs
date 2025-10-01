@@ -33,4 +33,25 @@ public static class ContractMapping
             Title = project.Title
         };
     }
+
+    public static Member MapToMember(this CreateMemberRequest request)
+    {
+        return new Member()
+        {
+            MemberId = Guid.NewGuid(),
+            Username = request.Username,
+            Password = request.Password,
+        };
+    }
+
+    public static MemberResponse MapToResponse(this Member member)
+    {
+        return new MemberResponse()
+        {
+            MemberId = member.MemberId,
+            Username = member.Username,
+            Password = member.Password,
+            IsAdmin = member.IsAdmin
+        };
+    }
 }

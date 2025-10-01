@@ -1,5 +1,4 @@
 using System.Data;
-using System.Data.Common;
 
 namespace TaskManager.Application.Database;
 
@@ -28,7 +27,13 @@ public class DbInitializer
             Title VARCHAR(100) NOT NULL,
             Priority INTEGER NOT NULL,
             FOREIGN KEY (ProjectId) REFERENCES Project(Id)
-            );";
+            );
+
+            CREATE TABLE IF NOT EXISTS Member (
+            Id VARCHAR(255) PRIMARY KEY,
+            Username VARCHAR(255),
+            Password VARCHAR(255),
+            IsAdmin BOOL);";
 
         cmd.ExecuteNonQuery();
     }
