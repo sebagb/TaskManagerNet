@@ -9,4 +9,5 @@ public interface IProjectService
     public bool DeleteById(Guid id);
     public IEnumerable<Project> GetAll();
     public Project? GetById(Guid id);
+    public ProjectTask? GetProjectTaskById(Guid taskId);
 }

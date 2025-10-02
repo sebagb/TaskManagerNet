@@ -179,4 +179,28 @@ public class ProjectRepository
 
         return project;
     }
+
+    public ProjectTask? GetProjectTaskById(Guid taskId)
+    {
+        using var connection = dbConnectionFactory.CreateConnection();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandType = CommandType.Text;
+        cmd.CommandText = @$"SELECT * FROM ProjectTask WHERE Id = '{taskId}'";
+
+        using var reader = cmd.ExecuteReader();
+
+        if (!reader.Read())
+        {
+            return null;
+        }
+
+        return new ProjectTask()
+        {
+            Id = reader.GetGuid(0),
+            ProjectId = reader.GetGuid(1),
+            Title = reader.GetString(2),
+            Priority = reader.GetInt32(3)
+        };
+    }
 }

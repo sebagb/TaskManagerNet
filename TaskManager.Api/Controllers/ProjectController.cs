@@ -89,7 +89,15 @@ public class ProjectController
         [FromRoute] Guid projectId,
         [FromRoute] Guid taskId)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        var task = service.GetProjectTaskById(taskId);
+
+        if (task == null)
+        {
+            return NotFound();
+        }
+
+        var response = task.MapToResponse();
+        return Ok(response);
     }
 
     [HttpDelete(ApiEndpoints.Project.DeleteTask)]

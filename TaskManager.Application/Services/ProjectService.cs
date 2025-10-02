@@ -32,4 +32,9 @@ public class ProjectService
     {
         return repository.GetById(id);
     }
+
+    public ProjectTask? GetProjectTaskById(Guid taskId)
+    {
+        return repository.GetProjectTaskById(taskId);
+    }
 }
