@@ -54,4 +54,15 @@ public static class ContractMapping
             IsAdmin = member.IsAdmin
         };
     }
+
+    public static Member MapToMember(this UpdateTrustedMemberRequest request, Guid memberId)
+    {
+        return new Member()
+        {
+            MemberId = memberId,
+            Username = request.Username,
+            Password = request.Password,
+            IsAdmin = request.IsAdmin
+        };
+    }
 }

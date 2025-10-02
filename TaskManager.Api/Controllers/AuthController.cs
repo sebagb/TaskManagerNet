@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using TaskManager.Api.Mappings;
@@ -48,7 +49,35 @@ public class AuthController
         return Ok(new JwtResponse() { Access_token = jwt });
     }
 
-    private string CreateTrustedMemberToken(Member member)
+    [HttpPut(ApiEndpoints.Auth.UpdateTrustedMember)]
+    [Authorize]
+    public IActionResult UpdateTrustedMember(
+        [FromBody] UpdateTrustedMemberRequest request)
+    {
+        var memberId = HttpContext.User.Claims
+            .First(x => x.Type.Equals("memberId"))
+            .Value;
+        var parsed = Guid.TryParse(memberId, out var id);
+
+        if (!parsed)
+        {
+            return BadRequest("Invalid memberId in claims");
+        }
+
+        var member = request.MapToMember(id);
+
+        var result = service.Update(member);
+
+        if (!result)
+        {
+            return NotFound();
+        }
+
+        var jwt = CreateTrustedMemberToken(member);
+        return Ok(jwt);
+    }
+
+    private static string CreateTrustedMemberToken(Member member)
     {
         var claims = new List<Claim>
         {

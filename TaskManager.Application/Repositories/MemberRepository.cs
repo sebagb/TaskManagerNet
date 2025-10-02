@@ -53,6 +53,16 @@ public class MemberRepository
 
     public bool Update(Member member)
     {
-        throw new NotImplementedException();
+        using var connection = dbConnectionFactory.CreateConnection();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandType = CommandType.Text;
+        cmd.CommandText = @$"UPDATE Member
+            SET Username = '{member.Username}',
+            Password =  '{member.Password}',
+            IsAdmin = {member.IsAdmin}
+            WHERE Id = '{member.MemberId}'";
+
+        return cmd.ExecuteNonQuery() > 0;
     }
 }
