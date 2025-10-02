@@ -48,6 +48,23 @@ public class ProjectRepository
         return true;
     }
 
+    public bool DeleteById(Guid id)
+    {
+        using var connection = dbConnectionFactory.CreateConnection();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandType = CommandType.Text;
+        cmd.CommandText = @$"DELETE FROM ProjectTask WHERE ProjectId = '{id}'";
+
+        cmd.ExecuteNonQuery();
+
+        cmd = connection.CreateCommand();
+        cmd.CommandType = CommandType.Text;
+        cmd.CommandText = @$"DELETE FROM Project WHERE Id = '{id}'";
+
+        return cmd.ExecuteNonQuery() > 0;
+    }
+
     public Project? GetById(Guid id)
     {
         using var connection = dbConnectionFactory.CreateConnection();

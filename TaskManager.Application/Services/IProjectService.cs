@@ -5,5 +5,6 @@ namespace TaskManager.Application.Services;
 public interface IProjectService
 {
     public bool CreateProject(Project project);
+    public bool DeleteById(Guid id);
     public Project? GetById(Guid id);
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TaskManager.Api.Auth;
 using TaskManager.Api.Mappings;
 using TaskManager.Application.Services;
 using TaskManager.Contract.Requests;
@@ -11,7 +12,7 @@ public class ProjectController
     : ControllerBase
 {
     [HttpPost(ApiEndpoints.Project.Create)]
-    [Authorize]
+    [Authorize(AuthConstants.AdminUserPolicyName)]
     public IActionResult Create(
         [FromBody] CreateProjectRequest request)
     {
@@ -19,6 +20,21 @@ public class ProjectController
         service.CreateProject(project);
         var response = project.MapToResponse();
         return CreatedAtAction(nameof(Get), new { id = project.Id }, response);
+    }
+
+    [HttpDelete(ApiEndpoints.Project.Delete)]
+    [Authorize(AuthConstants.AdminUserPolicyName)]
+    public IActionResult Delete(
+        [FromRoute] Guid id)
+    {
+        var result = service.DeleteById(id);
+
+        if (!result)
+        {
+            return NotFound();
+        }
+
+        return Ok();
     }
 
     [HttpGet(ApiEndpoints.Project.Get)]
@@ -37,6 +53,4 @@ public class ProjectController
     }
 
     //Trusted: add task
-
-    //Admin only: delete
 }

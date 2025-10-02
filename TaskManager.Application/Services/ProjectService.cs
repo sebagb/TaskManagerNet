@@ -13,6 +13,11 @@ public class ProjectService
         return repository.CreateProject(project);
     }
 
+    public bool DeleteById(Guid id)
+    {
+        return repository.DeleteById(id);
+    }
+
     public Project? GetById(Guid id)
     {
         return repository.GetById(id);
