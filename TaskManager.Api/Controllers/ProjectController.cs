@@ -67,5 +67,27 @@ public class ProjectController
         return Ok(response);
     }
 
-    //Trusted: add task
+    [HttpPost(ApiEndpoints.Project.CreateTask)]
+    public IActionResult CreateTask(
+        [FromRoute] Guid projectId,
+        [FromBody] string task)
+    {
+        return StatusCode(StatusCodes.Status501NotImplemented);
+    }
+
+    [HttpGet(ApiEndpoints.Project.GetTask)]
+    public IActionResult GetTask(
+        [FromRoute] Guid projectId,
+        [FromRoute] Guid taskId)
+    {
+        return StatusCode(StatusCodes.Status501NotImplemented);
+    }
+
+    [HttpDelete(ApiEndpoints.Project.DeleteTask)]
+    public IActionResult DeleteTask(
+        [FromRoute] Guid projectId,
+        [FromRoute] Guid taskId)
+    {
+        return StatusCode(StatusCodes.Status501NotImplemented);
+    }
 }
