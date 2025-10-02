@@ -74,7 +74,8 @@ public class AuthController
         }
 
         var jwt = CreateTrustedMemberToken(member);
-        return Ok(jwt);
+
+        return Ok(new JwtResponse() { Access_token = jwt });
     }
 
     private static string CreateTrustedMemberToken(Member member)
