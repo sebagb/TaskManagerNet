@@ -39,13 +39,14 @@ public class ProjectController
     }
 
     [HttpGet(ApiEndpoints.Project.GetAll)]
-    public IActionResult GetAll()
+    public IActionResult GetAll([FromBody] GetAllProjectsRequest request)
     {
-        var projects = service.GetAll();
+        var options = request.MapToOptions();
+        var projects = service.GetAll(options);
 
         if (projects.IsNullOrEmpty())
         {
-            return NotFound("The are no projects yet");
+            return NotFound("The are not that many projects yet");
         }
 
         var response = projects.Select(x => x.MapToResponse());

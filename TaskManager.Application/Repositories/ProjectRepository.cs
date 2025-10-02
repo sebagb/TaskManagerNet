@@ -93,7 +93,7 @@ public class ProjectRepository
         return cmd.ExecuteNonQuery() > 0;
     }
 
-    public IEnumerable<Project> GetAll()
+    public IEnumerable<Project> GetAll(GetAllProjectsOptions options)
     {
         using var connection = dbConnectionFactory.CreateConnection();
 
@@ -101,7 +101,10 @@ public class ProjectRepository
 
         var cmd = connection.CreateCommand();
         cmd.CommandType = CommandType.Text;
-        cmd.CommandText = @$"SELECT * FROM Project";
+        cmd.CommandText = @$"SELECT *
+            FROM Project
+            LIMIT {options.PageSize}
+            OFFSET {(options.Page - 1) * options.PageSize}";
 
         using var reader = cmd.ExecuteReader();
 

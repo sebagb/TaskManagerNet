@@ -28,9 +28,9 @@ public class ProjectService
         return repository.DeleteProjectTaskById(taskId);
     }
 
-    public IEnumerable<Project> GetAll()
+    public IEnumerable<Project> GetAll(GetAllProjectsOptions options)
     {
-        return repository.GetAll();
+        return repository.GetAll(options);
     }
 
     public Project? GetById(Guid id)

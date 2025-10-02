@@ -87,4 +87,14 @@ public static class ContractMapping
             Priority = project.Priority,
         };
     }
+
+    public static GetAllProjectsOptions MapToOptions(
+        this GetAllProjectsRequest request)
+    {
+        return new GetAllProjectsOptions()
+        {
+            Page = request.Page,
+            PageSize = request.PageSize
+        };
+    }
 }
