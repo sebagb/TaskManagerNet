@@ -2,7 +2,7 @@ namespace TaskManager.Application.Models;
 
 public class Project
 {
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
     public required int Deadline { get; set; }
     public State Status { get; set; }
     public List<ProjectTask> Tasks { get; set; } = [];
