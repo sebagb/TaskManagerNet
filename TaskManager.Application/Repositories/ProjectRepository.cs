@@ -82,6 +82,17 @@ public class ProjectRepository
         return cmd.ExecuteNonQuery() > 0;
     }
 
+    public bool DeleteProjectTaskById(Guid taskId)
+    {
+        using var connection = dbConnectionFactory.CreateConnection();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandType = CommandType.Text;
+        cmd.CommandText = @$"DELETE FROM ProjectTask WHERE Id = '{taskId}'";
+
+        return cmd.ExecuteNonQuery() > 0;
+    }
+
     public IEnumerable<Project> GetAll()
     {
         using var connection = dbConnectionFactory.CreateConnection();

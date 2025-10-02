@@ -101,10 +101,18 @@ public class ProjectController
     }
 
     [HttpDelete(ApiEndpoints.Project.DeleteTask)]
+    [Authorize]
     public IActionResult DeleteTask(
         [FromRoute] Guid projectId,
         [FromRoute] Guid taskId)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        var result = service.DeleteProjectTaskById(taskId);
+
+        if (!result)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
     }
 }

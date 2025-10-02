@@ -23,6 +23,11 @@ public class ProjectService
         return repository.DeleteById(id);
     }
 
+    public bool DeleteProjectTaskById(Guid taskId)
+    {
+        return repository.DeleteProjectTaskById(taskId);
+    }
+
     public IEnumerable<Project> GetAll()
     {
         return repository.GetAll();
