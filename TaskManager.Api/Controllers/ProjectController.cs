@@ -35,7 +35,7 @@ public class ProjectController
             return NotFound();
         }
 
-        return Ok();
+        return NoContent();
     }
 
     [HttpGet(ApiEndpoints.Project.GetAll)]
