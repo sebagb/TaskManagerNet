@@ -65,6 +65,60 @@ public class ProjectRepository
         return cmd.ExecuteNonQuery() > 0;
     }
 
+    public IEnumerable<Project> GetAll()
+    {
+        using var connection = dbConnectionFactory.CreateConnection();
+
+        var projects = new List<Project>();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandType = CommandType.Text;
+        cmd.CommandText = @$"SELECT * FROM Project";
+
+        using var reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            projects.Add(new Project()
+            {
+                Id = reader.GetGuid(0),
+                Deadline = reader.GetInt32(1),
+                Status = Enum.Parse<Project.State>(reader.GetString(2)),
+                Title = reader.GetString(3)
+            });
+        }
+
+        reader.Close();
+
+        if (projects.Count == 0)
+        {
+            return [];
+        }
+
+        foreach (var project in projects)
+        {
+            cmd.CommandText = @$"SELECT *
+                FROM ProjectTask
+                WHERE ProjectId = '{project.Id}'";
+
+            using var taskReader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                project.Tasks.Add(new ProjectTask()
+                {
+                    Id = reader.GetGuid(0),
+                    ProjectId = reader.GetGuid(1),
+                    Title = reader.GetString(2),
+                    Priority = reader.GetInt32(3)
+                });
+            }
+        }
+
+
+        return projects;
+    }
+
     public Project? GetById(Guid id)
     {
         using var connection = dbConnectionFactory.CreateConnection();

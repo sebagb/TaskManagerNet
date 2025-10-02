@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using TaskManager.Api.Auth;
 using TaskManager.Api.Mappings;
 using TaskManager.Application.Services;
@@ -37,7 +38,21 @@ public class ProjectController
         return Ok();
     }
 
-    [HttpGet(ApiEndpoints.Project.Get)]
+    [HttpGet(ApiEndpoints.Project.GetAll)]
+    public IActionResult GetAll()
+    {
+        var projects = service.GetAll();
+
+        if (projects.IsNullOrEmpty())
+        {
+            return NotFound("The are no projects yet");
+        }
+
+        var response = projects.Select(x => x.MapToResponse());
+        return Ok(response);
+    }
+
+    [HttpGet(ApiEndpoints.Project.GetById)]
     public IActionResult Get(
         [FromRoute] Guid id)
     {

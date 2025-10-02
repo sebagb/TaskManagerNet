@@ -18,6 +18,11 @@ public class ProjectService
         return repository.DeleteById(id);
     }
 
+    public IEnumerable<Project> GetAll()
+    {
+        return repository.GetAll();
+    }
+
     public Project? GetById(Guid id)
     {
         return repository.GetById(id);
