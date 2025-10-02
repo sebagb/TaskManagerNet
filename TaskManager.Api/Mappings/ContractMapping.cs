@@ -65,4 +65,26 @@ public static class ContractMapping
             IsAdmin = request.IsAdmin
         };
     }
+
+    public static ProjectTask MapToProjectTask(this CreateProjectTaskRequest request, Guid projectId)
+    {
+        return new ProjectTask()
+        {
+            Id = Guid.NewGuid(),
+            ProjectId = projectId,
+            Title = request.Title,
+            Priority = request.Priority
+        };
+    }
+
+    public static ProjectTaskResponse MapToResponse(this ProjectTask project)
+    {
+        return new ProjectTaskResponse()
+        {
+            Id = project.Id,
+            ProjectId = project.ProjectId,
+            Title = project.Title,
+            Priority = project.Priority,
+        };
+    }
 }

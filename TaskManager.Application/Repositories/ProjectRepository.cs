@@ -48,6 +48,23 @@ public class ProjectRepository
         return true;
     }
 
+    public bool CreateProjectTask(ProjectTask task)
+    {
+        using var connection = dbConnectionFactory.CreateConnection();
+
+        var cmd = connection.CreateCommand();
+        cmd.CommandType = CommandType.Text;
+        cmd.CommandText = @$"INSERT INTO ProjectTask
+                (Id, ProjectId, Title, Priority)
+                VALUES (
+                    '{task.Id}',
+                    '{task.ProjectId}',
+                    '{task.Title}',
+                    {task.Priority})";
+
+        return cmd.ExecuteNonQuery() > 0;
+    }
+
     public bool DeleteById(Guid id)
     {
         using var connection = dbConnectionFactory.CreateConnection();

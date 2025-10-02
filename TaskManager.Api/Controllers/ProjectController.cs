@@ -68,11 +68,20 @@ public class ProjectController
     }
 
     [HttpPost(ApiEndpoints.Project.CreateTask)]
+    [Authorize]
     public IActionResult CreateTask(
         [FromRoute] Guid projectId,
-        [FromBody] string task)
+        [FromBody] CreateProjectTaskRequest request)
     {
-        return StatusCode(StatusCodes.Status501NotImplemented);
+        var task = request.MapToProjectTask(projectId);
+        var result = service.CreateProjectTask(task);
+        if (!result)
+        {
+            return NotFound("There are no projects with requested id");
+        }
+
+        var response = task.MapToResponse();
+        return CreatedAtAction(nameof(Get), new { id = projectId }, response);
     }
 
     [HttpGet(ApiEndpoints.Project.GetTask)]
