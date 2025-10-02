@@ -103,6 +103,7 @@ public class ProjectRepository
         cmd.CommandType = CommandType.Text;
         cmd.CommandText = @$"SELECT *
             FROM Project
+            WHERE title LIKE '%{options.Title ?? ""}%'
             LIMIT {options.PageSize}
             OFFSET {(options.Page - 1) * options.PageSize}";
 

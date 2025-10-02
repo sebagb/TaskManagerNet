@@ -94,7 +94,8 @@ public static class ContractMapping
         return new GetAllProjectsOptions()
         {
             Page = request.Page,
-            PageSize = request.PageSize
+            PageSize = request.PageSize,
+            Title = request.Title
         };
     }
 }
