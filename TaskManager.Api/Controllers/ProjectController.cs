@@ -39,7 +39,7 @@ public class ProjectController
     }
 
     [HttpGet(ApiEndpoints.Project.GetAll)]
-    public IActionResult GetAll([FromBody] GetAllProjectsRequest request)
+    public IActionResult GetAll([FromQuery] GetAllProjectsRequest request)
     {
         var options = request.MapToOptions();
         var projects = service.GetAll(options);
