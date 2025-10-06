@@ -27,6 +27,11 @@ The repository implementation contains raw SQL commands to demonstrate manual qu
 ## API Documentation
 
 The API documentation is provided via Swagger UI included with ASP.NET Core configuration.
+It can be accessed on `/swagger/index.html`
+
+## Docker
+A dockerfile and docker-compose.yaml are provided to setup the application and database provider.
+By default ASP.NET will run on port `8080` and the database server on port `3306`
 
 ## First Steps
 1. Register a member on `POST /member/register`. 
