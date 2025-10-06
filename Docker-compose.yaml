@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    image: taskmanager-api:1
+    container_name: TaskManagerApi
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Port=3306;Database=taskmanagerdb;User ID=user;Password=changeme
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: TaskManagerDb
+    restart: no
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme
+      MYSQL_DATABASE: taskmanagerdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: changeme
+    ports:
+      - "3296:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

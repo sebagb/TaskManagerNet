@@ -6,9 +6,15 @@ using TaskManager.Api.Auth;
 using TaskManager.Application;
 using TaskManager.Application.Database;
 
+var isDockerContainer =
+    Environment.GetEnvironmentVariable("IS_DOCKER_CONTAINER") == "true";
+
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration["Database:ConnectionString"];
+var connectionString = isDockerContainer ?
+    builder.Configuration["Database:ConnectionStringContainer"]
+    : builder.Configuration["Database:ConnectionString"];
+
 builder.Services.AddApplication();
 builder.Services.AddDatabase(connectionString);
 
@@ -77,7 +83,8 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+var useSwagger = app.Environment.IsDevelopment() || isDockerContainer;
+if (useSwagger)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
