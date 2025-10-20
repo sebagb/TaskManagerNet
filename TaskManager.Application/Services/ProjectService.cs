@@ -15,6 +15,12 @@ public class ProjectService
 
     public bool CreateProjectTask(ProjectTask task)
     {
+        var projectId = task.ProjectId;
+        var project = GetById(projectId);
+        if (project == null)
+        {
+            return false;
+        }
         return repository.CreateProjectTask(task);
     }
 
