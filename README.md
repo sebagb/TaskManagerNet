@@ -33,6 +33,24 @@ It can be accessed on `/swagger/index.html`
 A Dockerfile and a docker-compose.yaml file are provided to set up the application and database provider.
 By default, ASP.NET will run on port `8080`, and the database server will run on port `3306`.
 
+## Endpoints
+
+### Projects
+`POST /projects` -> Create a project.
+`GET /projects` -> Retrieve all projects.
+`GET /projects/{Id}` -> Retrieve a project by ID.
+`DELETE /projects/{Id}` -> Delete a project by ID.
+
+### Tasks
+`POST /projects/{projectId}/tasks` -> Create a task for the given project ID.
+`GET /projects/{projectId}/tasks/{taskId}` -> Retrieve a project's task by the given ID's.
+`DELETE /projects/{projectId}/tasks/{taskId}` -> Delete a project's task by the given ID's.
+
+### Members
+`POST /member/register` -> Create a member.
+`POST /member/login` -> Validate credentials in the JSON body and obtain JWT authorization.
+`PUT /member/update` -> Update the member information provided in the JWT.
+
 ## First Steps
 1. Register a member via `POST /member/register`. 
 2. Log in to obtain a JWT via `POST /member/login`.
